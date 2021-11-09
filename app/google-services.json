@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "359272467856",
+    "project_id": "financial-management-27da2",
+    "storage_bucket": "financial-management-27da2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359272467856:android:cb63ed8a2f0cadcecbf715",
+        "android_client_info": {
+          "package_name": "com.example.financialManagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359272467856-sminnaeureujpe72r8uc0ug2vjmmbq2j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_dGyLR3yXXHa-fgUE2S_uY_XBsq2ypps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359272467856-sminnaeureujpe72r8uc0ug2vjmmbq2j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

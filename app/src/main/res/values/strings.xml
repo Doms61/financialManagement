@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">FinMngm</string>
+    <string name="app_name">Financial Management</string>
+    <string name="app_icon">app_icon</string>
+    <string name="email_address">Enter your email: example@gmail.com</string>
+    <string name="password">Enter your password</string>
+    <string name="log_in">Login</string>
+    <string name="sign_in">Sign in</string>
+    <string name="facebook">Sign in with Facebook</string>
+    <string name="google">Sign in with Google</string>
 </resources>
