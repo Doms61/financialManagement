@@ -9,3 +9,5 @@ the future of the project on the other hand, can hold anything.
 So if someone stumbled upon this project, at a later stage (e.g it's already usable) then feel free to message me, with your ideas of what can be improved or what would you like to see in it, so you could also use it. 
 
 I will be updating this README (hopefully) regurarly with new features, and milestones. 
+
+There's also a Jira for this project: https://financialmanagement-doms.atlassian.net/
