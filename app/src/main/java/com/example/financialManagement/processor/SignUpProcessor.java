@@ -2,6 +2,7 @@ package com.example.financialManagement.processor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,7 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import financialManagement.R;
 
@@ -58,6 +61,18 @@ public class SignUpProcessor extends AppCompatActivity {
         repeatedPassword = findViewById(R.id.signupRepeatPwd);
         mail = findViewById(R.id.signupEmail);
         userName = findViewById(R.id.signupUsrName);
+
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        startActivity(new Intent(SignUpProcessor.this, MainActivity.class));
+        return super.onOptionsItemSelected(item);
 
     }
 
@@ -127,7 +142,8 @@ public class SignUpProcessor extends AppCompatActivity {
      * @return boolean
      */
     private boolean isPwdCorrect() {
-
+        return true;
+/*
         if (!pwd.equals(repeatedPwd)) {
             Toast.makeText(this, "Passwords do not match. Please try again!", Toast.LENGTH_SHORT).show();
         } else if (pwd.length() < 8) {
@@ -136,5 +152,5 @@ public class SignUpProcessor extends AppCompatActivity {
             return true;
         }
         return false;
-    }
+   */ }
 }
