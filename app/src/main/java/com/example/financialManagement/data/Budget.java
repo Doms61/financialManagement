@@ -1,5 +1,8 @@
 package com.example.financialManagement.data;
 
+/**
+ * Data class that captures the budget information for logged in users
+ */
 public class Budget {
 
     private final String name;
@@ -7,6 +10,12 @@ public class Budget {
     private int percentWarning;
     private int amountWarning;
 
+    /**
+     * Constructor.
+     *
+     * @param name   Name of the budget
+     * @param amount Budget amount
+     */
     public Budget(String name, int amount) {
         this.name = name;
         this.amount = amount;

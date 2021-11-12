@@ -18,7 +18,8 @@ package="financialManagement">
         </intent-filter>
     </activity>
 
-    <activity android:name="com.example.financialManagement.processor.SignInProcessor"/>
+    <activity android:name="com.example.financialManagement.processor.SignUpProcessor"/>
+    <activity android:name="com.example.financialManagement.processor.UserProfileProcessor"/>
     <activity
         android:name="com.example.financialManagement.ui.login.LoginActivity"
         android:exported="false"

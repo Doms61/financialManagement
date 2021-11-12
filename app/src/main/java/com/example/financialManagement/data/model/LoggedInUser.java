@@ -7,29 +7,42 @@ import com.example.financialManagement.data.RecurringPayment;
 import java.util.List;
 
 /**
- * Data class that captures user information for logged in users retrieved from LoginRepository
+ * Data class that captures user information for logged in users.
  */
 public class LoggedInUser {
 
-    private final String userId;
-    private final String displayName;
-    private final String email;
+    private String userId;
+    private String userName;
+    private String email;
     private List<Balance> balanceList;
     private List<RecurringPayment> recurringPaymentsList;
     private List<Budget> budgetsList;
 
-    public LoggedInUser(String userId, String displayName, String email) {
+    /**
+     * Constructor.
+     *
+     * @param userId   User ID
+     * @param userName User name
+     * @param email    user email
+     */
+    public LoggedInUser(String userId, String userName, String email) {
         this.userId = userId;
-        this.displayName = displayName;
+        this.userName = userName;
         this.email = email;
+    }
+
+    /**
+     * Empty constructor for object deserialization.
+     */
+    public LoggedInUser() {
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getUserName() {
+        return userName;
     }
 
     public String getEmail() {
@@ -58,5 +71,17 @@ public class LoggedInUser {
 
     public void setBudgetsList(List<Budget> budgetsList) {
         this.budgetsList = budgetsList;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
