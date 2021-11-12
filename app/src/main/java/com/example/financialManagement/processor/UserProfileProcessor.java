@@ -61,8 +61,6 @@ public class UserProfileProcessor extends AppCompatActivity {
         db.collection(Objects.requireNonNull(loggedInUser.getEmail())).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    System.out.println(document.getId());
-                    System.out.println("document " + document);
                     DocumentReference docRef = db.collection(loggedInUser.getEmail()).document(document.getId());
                     docRef.get().addOnSuccessListener(documentSnapshot -> {
                         user = documentSnapshot.toObject(LoggedInUser.class);
