@@ -10,7 +10,7 @@
     tools:context="com.example.financialManagement.MainActivity">
 
     <ImageView
-        android:id="@+id/app_login_image"
+        android:id="@+id/app_signupImage"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="210dp"
@@ -39,10 +39,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_login_image" />
+        app:layout_constraintTop_toBottomOf="@+id/app_signupImage" />
 
     <EditText
-        android:id="@+id/editTextTextPassword2"
+        android:id="@+id/loginPwd"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -68,20 +68,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPwd" />
 
     <Button
-        android:id="@+id/signIn_btn"
+        android:id="@+id/signUp_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="500dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/sign_in"
+        android:text="@string/sign_up"
+        android:onClick="signUpClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPwd" />
 
     <Button
         android:id="@+id/facebook"
@@ -105,6 +106,6 @@
         android:text="@string/google"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/signUp_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
