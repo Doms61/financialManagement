@@ -10,7 +10,7 @@
     tools:context="com.example.financialManagement.MainActivity">
 
     <ImageView
-        android:id="@+id/app_login_image"
+        android:id="@+id/app_signinImage"
         android:layout_width="0dp"
         android:layout_height="175dp"
         android:layout_marginStart="70dp"
@@ -40,10 +40,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_login_image" />
+        app:layout_constraintTop_toBottomOf="@+id/app_signinImage" />
 
     <EditText
-        android:id="@+id/editTextTextPassword2"
+        android:id="@+id/loginPwd"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
@@ -66,10 +66,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="225dp"
         android:text="@string/log_in"
+        android:onClick="loginClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPwd" />
 
     <Button
         android:id="@+id/signIn_btn"
@@ -79,10 +80,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="@string/sign_in"
+        android:onClick="signInClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPwd" />
 
     <Button
         android:id="@+id/facebook"

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.financialManagement.processor.SignInProcessor">
+
+    <ImageView
+        android:id="@+id/app_signinImage"
+        android:layout_width="130dp"
+        android:layout_height="158dp"
+        android:layout_marginTop="52dp"
+        android:layout_weight="50"
+        android:contentDescription="@string/app_icon"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/signinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="205dp"
+        android:text="@string/sign_in"
+        android:onClick="signInClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signinRepeatPwd" />
+
+    <EditText
+        android:id="@+id/signinEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="85dp"
+        android:autofillHints="AUTOFILL_HINT_EMAIL_ADDRESS"
+        android:ems="10"
+        android:hint="@string/prompt_email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signinUsrName" />
+
+    <EditText
+        android:id="@+id/signinPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="85dp"
+        android:autofillHints="AUTOFILL_HINT_NEW_PASSWORD"
+        android:ems="10"
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signinEmail" />
+
+    <EditText
+        android:id="@+id/signinRepeatPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="85dp"
+        android:autofillHints="AUTOFILL_HINT_NEW_PASSWORD"
+        android:ems="10"
+        android:hint="@string/sign_in_repeat_pwd"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signinPwd" />
+
+    <EditText
+        android:id="@+id/signinUsrName"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="85dp"
+        android:autofillHints=".AUTOFILL_HINT_USERNAME"
+        android:ems="10"
+        android:hint="@string/sign_in_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
