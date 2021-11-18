@@ -1,12 +1,17 @@
 package com.example.financialManagement.data;
 
+import java.io.Serializable;
+
 /**
  * Data class that captures the balance information for logged in users.
  */
-public class Balance {
+public class Balance implements Serializable {
 
-    private final String balanceName;
-    private final int balance;
+    private String balanceName;
+    private int balance;
+
+
+    public Balance() { }
 
     /**
      * Constructor.
@@ -25,5 +30,13 @@ public class Balance {
 
     public int getBalance() {
         return balance;
+    }
+
+    public void setBalanceName(String balanceName) {
+        this.balanceName = balanceName;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 }

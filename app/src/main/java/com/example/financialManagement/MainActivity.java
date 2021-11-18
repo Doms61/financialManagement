@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                startActivity(new Intent(MainActivity.this, UserProfileProcessor.class));
+                startActivity(new Intent(MainActivity.this, UserProfileProcessor.class));//BalanceProcessor.class));//
             } else {
                 Toast.makeText(MainActivity.this, "Incorrect email or password. Try again!", Toast.LENGTH_SHORT).show();
             }

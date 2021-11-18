@@ -87,8 +87,12 @@ public class UserProfileProcessor extends AppCompatActivity {
         getUserData();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     public void onBtnClick(View view) {
+        popUp();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void popUp() {
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.activity_create_balance, null);
@@ -108,17 +112,24 @@ public class UserProfileProcessor extends AppCompatActivity {
             popupWindow.dismiss();
             return true;
         });
-
+        findViewById(R.id.createBalanceSave_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(UserProfileProcessor.this, "Hello", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setOnClickListeners() {
         fabSettings.setOnClickListener(view -> {
             if(fabExpanded) {
                 fabProcessor.closeSubMenus(fabList, fabSettings, tvList);
+                popUp();
                 fabExpanded = false;
             }
             else {
                 fabProcessor.openSubMenus(fabList, fabSettings, tvList);
+                popUp();
                 fabExpanded = true;
             }
         });
