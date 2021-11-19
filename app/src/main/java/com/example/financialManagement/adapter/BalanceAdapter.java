@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import financialManagement.R;
 
+/**
+ * Adapter class for balances
+ */
 public class BalanceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private final ArrayList<Balance> balanceList;

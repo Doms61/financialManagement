@@ -1,5 +1,8 @@
 package com.example.financialManagement.data;
 
+/**
+ * Data class for spending
+ */
 public class Spending {
 
     private String name;

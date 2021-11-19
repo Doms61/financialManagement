@@ -9,11 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import financialManagement.R;
 
+/**
+ * ViewHolder class for all the recycler views
+ */
 public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     public TextView name;
     final private OnListItemClickListener onListItemClickListener;
 
+    /**
+     * Constructor.
+     *
+     * @param itemView View
+     * @param onListItemClickListener OnListItemClickListener
+     */
     public ViewHolder(@NonNull View itemView, OnListItemClickListener onListItemClickListener) {
         super(itemView);
         name = itemView.findViewById(R.id.balanceListName_tv);

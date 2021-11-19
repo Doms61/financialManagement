@@ -25,6 +25,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import financialManagement.R;
 
+/**
+ * Class for handling a specific balance and all his properties including it's spending.
+ */
 public class BalanceViewProcessor extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -102,10 +105,20 @@ public class BalanceViewProcessor extends AppCompatActivity {
         fabSave.setOnClickListener(task -> popUp());
     }
 
+    /**
+     * Saving new spending for this balance
+     *
+     * @param view View
+     */
     public void saveSpendingBtn(View view) {
 
     }
 
+    /**
+     * Canceling new spending for this balance
+     *
+     * @param view View
+     */
     public void cancelSpendingBtn(View view) {
         popupWindow.dismiss();
     }
