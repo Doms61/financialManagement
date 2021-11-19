@@ -23,3 +23,14 @@ TODO for the next week:
  - Finish user profile
  - Add Balance (wallet) creation
  - Add Budget creation
+
+Status after the 2nd week: 
+(I suppose, I should call them sprints xD ) 
+ - User profile is on hold, started to be used as a testing view
+ - Balance (wallet) creation is done. 
+ - Started on working on spendings.
+ 
+TODO for next sprint: 
+ - finish single balance view
+ - finish spendings (single spending view as well)
+ - start with budget
