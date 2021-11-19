@@ -21,6 +21,7 @@ package="financialManagement">
     <activity android:name="com.example.financialManagement.processor.SignUpProcessor"/>
     <activity android:name="com.example.financialManagement.processor.UserProfileProcessor"/>
     <activity android:name="com.example.financialManagement.processor.BalanceProcessor"/>
+    <activity android:name="com.example.financialManagement.processor.BalanceViewProcessor"/>
     <activity
         android:name="com.example.financialManagement.ui.login.LoginActivity"
         android:exported="false"

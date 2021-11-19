@@ -1,6 +1,6 @@
 package com.example.financialManagement.processor;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.financialManagement.adapter.BalanceAdapter;
 import com.example.financialManagement.data.Balance;
+import com.example.financialManagement.interfaces.OnListItemClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,7 +21,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import androidx.annotation.Nullable;
@@ -29,43 +32,46 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import financialManagement.R;
 
-public class BalanceProcessor extends AppCompatActivity implements BalanceAdapter.OnListItemClickListener {
+/**
+ * Class that handles viewing all the balances and adding new ones.
+ */
+public class BalanceProcessor extends AppCompatActivity implements OnListItemClickListener {
 
     private static final String BALANCE_LIST = "balanceList";
 
+    // Firebase relevant
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
 
+    // Recycler view - for lists
     private RecyclerView balanceList;
     private RecyclerView.Adapter balanceAdapter;
 
+    // Balance relevant
     private ArrayList<Balance> balances;
     private Balance balance;
 
+    // Path to the document containing all the balances on firebase
     private String docPath;
-
-    private String email;
 
     //FAB Declarations
     private FabProcessor fabProcessor;
 
     private FloatingActionButton fabSettings;
-    private FloatingActionButton fabEdit;
     private FloatingActionButton fabDelete;
-    private FloatingActionButton fabSave;
-    private List<FloatingActionButton> fabList = new ArrayList<>();
+    private final List<FloatingActionButton> fabList = new ArrayList<>();
 
-    private TextView tvEdit;
     private TextView tvDelete;
-    private TextView tvSave;
-    private List<TextView> tvList = new ArrayList<>();
+    private final List<TextView> tvList = new ArrayList<>();
 
     private boolean fabExpanded = false;
     //end FAB Declarations
 
+    // Popup window (new balance creation) relevant
     private PopupWindow popupWindow;
-
+    private EditText createBalanceAmount;
+    private EditText createBalanceName;
 
 
     @Override
@@ -88,7 +94,7 @@ public class BalanceProcessor extends AppCompatActivity implements BalanceAdapte
         fabProcessor.closeSubMenus(fabList, fabSettings, tvList);
 
         assert currentUser != null;
-        email = currentUser.getEmail();
+        String email = currentUser.getEmail();
 
         assert email != null;
         docPath = db.collection(email).document(BALANCE_LIST).collection(BALANCE_LIST).getPath();
@@ -98,13 +104,57 @@ public class BalanceProcessor extends AppCompatActivity implements BalanceAdapte
         getBalances();
     }
 
+    /**
+     * Save button in the add new balance popup.
+     *
+     * @param view View
+     */
+    public void saveBtnClick(View view) {
+        Map<String, Object> dataToSave = new HashMap<>();
+        balance.setBalance(Integer.parseInt(createBalanceAmount.getText().toString()));
+        balance.setBalanceName(createBalanceName.getText().toString());
+
+        dataToSave.put("balance", balance.getBalance());
+        dataToSave.put("balanceName", balance.getBalanceName());
+        db.collection(docPath).document(createBalanceName.getText().toString()).set(dataToSave).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "New balance added", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Balance failed to be created", Toast.LENGTH_SHORT).show();
+            }
+        });
+        refresh();
+    }
+
+    /**
+     * Cancel button in the add new balance popup.
+     *
+     * @param view View
+     */
+    public void cancelBtnClick(View view) {
+        popupWindow.dismiss();
+    }
+
+    /**
+     * On list item click, it should open the balance in a new intent.
+     *
+     * @param clickedItemIndex Index of the clicked item
+     */
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        startActivity(new Intent(BalanceProcessor.this, BalanceViewProcessor.class)
+                .putExtra("balance", balances.get(clickedItemIndex)));
+    }
+
+    /**
+     * On click listeners for FAB mainly
+     */
     private void setOnClickListeners() {
         fabSettings.setOnClickListener(view -> {
-            if(fabExpanded) {
+            if (fabExpanded) {
                 fabProcessor.closeSubMenus(fabList, fabSettings, tvList);
                 fabExpanded = false;
-            }
-            else {
+            } else {
                 fabDelete.setImageResource(R.drawable.ic_create_black_24dp);
                 fabDelete.setVisibility(View.VISIBLE);
 
@@ -115,15 +165,16 @@ public class BalanceProcessor extends AppCompatActivity implements BalanceAdapte
                 fabExpanded = true;
             }
         });
-
         fabDelete.setOnClickListener(view -> popUp());
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    /**
+     * Popup creation, initialization, declaration
+     */
     private void popUp() {
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.activity_create_balance, null);
+        final View popupView = inflater.inflate(R.layout.activity_create_balance, null);
 
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -132,36 +183,42 @@ public class BalanceProcessor extends AppCompatActivity implements BalanceAdapte
 
         // show the popup window
         popupWindow.showAtLocation(this.findViewById(R.id.balances_layout), Gravity.CENTER, 0, 0);
+
+        createBalanceName = popupView.findViewById(R.id.createSpendingName_tv);
+        createBalanceAmount = popupView.findViewById(R.id.createSpendingAmount_tv);
     }
 
-    //FAB initializations
+    /**
+     * FAB initialization
+     */
     private void setUp() {
         fabSettings = findViewById(R.id.fab_settings);
         fabProcessor = new FabProcessor();
 
-        fabEdit = findViewById(R.id.fab_edit);
+        FloatingActionButton fabEdit = findViewById(R.id.fab_edit);
         fabDelete = findViewById(R.id.fab_delete);
-        fabSave = findViewById(R.id.fab_save);
+        FloatingActionButton fabSave = findViewById(R.id.fab_save);
 
         fabList.add(fabEdit);
         fabList.add(fabDelete);
         fabList.add(fabSave);
 
-        tvEdit = findViewById(R.id.fab_edit_tv);
+        TextView tvEdit = findViewById(R.id.fab_edit_tv);
         tvDelete = findViewById(R.id.fab_delete_tv);
-        tvSave = findViewById(R.id.fab_save_tv);
+        TextView tvSave = findViewById(R.id.fab_save_tv);
 
         tvList.add(tvEdit);
         tvList.add(tvDelete);
         tvList.add(tvSave);
-//
-
     }
 
-    private void getBalances(){
+    /**
+     * Get all the balances from firebase and show them in the view
+     */
+    private void getBalances() {
         db.collection(docPath).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                for (QueryDocumentSnapshot document: Objects.requireNonNull(task.getResult())) {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                     db.collection(docPath).document(document.getId()).get().addOnSuccessListener(documentSnapshot -> {
                         balances.add(balance = documentSnapshot.toObject(Balance.class));
 
@@ -172,25 +229,13 @@ public class BalanceProcessor extends AppCompatActivity implements BalanceAdapte
         });
     }
 
-    public void saveBtnClick(View view) {
-        @SuppressLint("ResourceType") View viewById = findViewById(R.layout.activity_create_balance);
-
-        EditText createBalanceName = viewById.findViewById(R.id.createBalanceName_tv);
-        EditText createBalanceAmount = viewById.findViewById(R.id.createBalanceAmount_tv);
-
-//        balance.setBalance(Integer.parseInt(createBalanceAmount.getText().toString()));
-//        balance.setBalanceName(createBalanceName.getText().toString());
-        Toast.makeText(this, createBalanceAmount.getEditableText(), Toast.LENGTH_SHORT).show();
-
-    }
-
-    public void cancelBtnClick(View view) {
-        popupWindow.dismiss();
-    }
-
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
-//        startActivity(new Intent(BalanceProcessor.this, BalanceViewProcessor.class)
-//                .putExtra("balance", balances.get(clickedItemIndex)));
+    /**
+     * Refreshes the activity, thus clearing all forms.
+     */
+    private void refresh() {
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 }

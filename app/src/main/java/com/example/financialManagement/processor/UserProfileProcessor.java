@@ -112,12 +112,6 @@ public class UserProfileProcessor extends AppCompatActivity {
             popupWindow.dismiss();
             return true;
         });
-        findViewById(R.id.createBalanceSave_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(UserProfileProcessor.this, "Hello", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void setOnClickListeners() {

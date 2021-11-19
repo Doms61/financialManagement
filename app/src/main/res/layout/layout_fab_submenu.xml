@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.846"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_check_black_24dp" />
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
     <TextView
         android:id="@+id/fab_save_tv"

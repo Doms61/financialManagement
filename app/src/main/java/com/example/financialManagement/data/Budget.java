@@ -6,7 +6,7 @@ package com.example.financialManagement.data;
 public class Budget {
 
     private final String name;
-    private final int amount;
+    private final double amount;
     private int percentWarning;
     private int amountWarning;
 
@@ -16,7 +16,7 @@ public class Budget {
      * @param name   Name of the budget
      * @param amount Budget amount
      */
-    public Budget(String name, int amount) {
+    public Budget(String name, double amount) {
         this.name = name;
         this.amount = amount;
     }
@@ -25,7 +25,7 @@ public class Budget {
         return name;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
