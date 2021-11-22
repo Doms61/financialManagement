@@ -1,15 +1,20 @@
 package com.example.financialManagement.data;
 
+import java.io.Serializable;
+
 /**
  * Data class that captures the budget information for logged in users
  */
-public class Budget {
+public class Budget implements Serializable {
 
-    private final String name;
-    private final double amount;
+    private String name;
+    private double amount;
     private int percentWarning;
     private int amountWarning;
 
+    public Budget() {
+
+    }
     /**
      * Constructor.
      *
@@ -18,6 +23,14 @@ public class Budget {
      */
     public Budget(String name, double amount) {
         this.name = name;
+        this.amount = amount;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

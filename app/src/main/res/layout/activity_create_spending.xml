@@ -12,25 +12,25 @@
         android:id="@+id/createSpendingSave_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="28dp"
         android:onClick="saveSpendingBtn"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.179"
+        app:layout_constraintHorizontal_bias="0.191"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createSpendingAmount_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/typeSpinner" />
 
     <Button
         android:id="@+id/createSpendingCancel_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="28dp"
         android:onClick="cancelSpendingBtn"
         android:text="@android:string/cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toEndOf="@+id/createSpendingSave_btn"
-        app:layout_constraintTop_toBottomOf="@+id/createSpendingAmount_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/typeSpinner" />
 
     <EditText
         android:id="@+id/createSpendingName_tv"
@@ -49,7 +49,7 @@
         android:id="@+id/createSpendingAmount_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number"
         android:textColor="#DACECE"
@@ -66,9 +66,9 @@
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.858"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createSpendingAmount_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/createSpendingDesc_tv" />
 
     <TextView
         android:id="@+id/textView5"
@@ -87,14 +87,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
         android:text="Spending type"
         android:textColor="#DACECE"
         app:layout_constraintEnd_toStartOf="@+id/typeSpinner"
-        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView2"
@@ -107,4 +107,29 @@
         app:layout_constraintHorizontal_bias="0.702"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="20dp"
+        android:text="Spending description"
+        android:textColor="#DACECE"
+        app:layout_constraintEnd_toStartOf="@+id/createSpendingDesc_tv"
+        app:layout_constraintHorizontal_bias="0.947"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/createSpendingDesc_tv"
+        android:layout_width="212dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="#DACECE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createSpendingAmount_tv" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

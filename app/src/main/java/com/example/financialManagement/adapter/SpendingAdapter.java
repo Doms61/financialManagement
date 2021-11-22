@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.financialManagement.data.Balance;
+import com.example.financialManagement.data.Spending;
 import com.example.financialManagement.interfaces.OnListItemClickListener;
 import com.example.financialManagement.viewHolders.ViewHolder;
 
@@ -14,17 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import financialManagement.R;
 
-/**
- * Adapter class for balances
- */
-public class BalanceAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class SpendingAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private final ArrayList<Balance> balanceList;
+    private final ArrayList<Spending> spendingList;
     final private OnListItemClickListener onListItemClickListener;
 
-    public BalanceAdapter(ArrayList<Balance> balanceList, OnListItemClickListener onListItemClickListener){
+    public SpendingAdapter(ArrayList<Spending> spendingList, OnListItemClickListener onListItemClickListener){
 
-        this.balanceList = balanceList;
+        this.spendingList = spendingList;
         this.onListItemClickListener = onListItemClickListener;
     }
 
@@ -38,12 +35,12 @@ public class BalanceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.name.setText(balanceList.get(position).getBalanceName());
-        holder.amount.setText(String.valueOf(balanceList.get(position).getBalance()));
+        holder.name.setText(spendingList.get(position).getName());
+        holder.amount.setText(String.valueOf(spendingList.get(position).getAmount()));
     }
 
     @Override
     public int getItemCount() {
-        return balanceList.size();
+        return spendingList.size();
     }
 }

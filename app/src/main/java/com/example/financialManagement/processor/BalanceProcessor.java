@@ -28,16 +28,17 @@ import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import financialManagement.R;
+
+import static com.example.financialManagement.enumerations.Enums.BALANCE_LIST;
 
 /**
  * Class that handles viewing all the balances and adding new ones.
  */
 public class BalanceProcessor extends AppCompatActivity implements OnListItemClickListener {
-
-    private static final String BALANCE_LIST = "balanceList";
 
     // Firebase relevant
     private FirebaseAuth firebaseAuth;
@@ -65,6 +66,9 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
     private TextView tvDelete;
     private final List<TextView> tvList = new ArrayList<>();
 
+    private CardView fabDeleteCard;
+    private final List<CardView> fabCards = new ArrayList<>();
+
     private boolean fabExpanded = false;
     //end FAB Declarations
 
@@ -91,13 +95,15 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
 
         setOnClickListeners();
 
-        fabProcessor.closeSubMenus(fabList, fabSettings, tvList);
+        fabProcessor.closeSubMenus(fabList, fabSettings, fabCards, tvList);
 
         assert currentUser != null;
         String email = currentUser.getEmail();
 
         assert email != null;
-        docPath = db.collection(email).document(BALANCE_LIST).collection(BALANCE_LIST).getPath();
+        docPath = db.collection(email)
+                .document(BALANCE_LIST.getDescription())
+                .collection(BALANCE_LIST.getDescription()).getPath();
 
         balances = new ArrayList<>();
 
@@ -116,7 +122,7 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
 
         dataToSave.put("balance", balance.getBalance());
         dataToSave.put("balanceName", balance.getBalanceName());
-        db.collection(docPath).document(createBalanceName.getText().toString()).set(dataToSave).addOnCompleteListener(this, task -> {
+        db.collection(docPath).document(balance.getBalanceName()).set(dataToSave).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "New balance added", Toast.LENGTH_SHORT).show();
             } else {
@@ -152,7 +158,7 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
     private void setOnClickListeners() {
         fabSettings.setOnClickListener(view -> {
             if (fabExpanded) {
-                fabProcessor.closeSubMenus(fabList, fabSettings, tvList);
+                fabProcessor.closeSubMenus(fabList, fabSettings, fabCards, tvList);
                 fabExpanded = false;
             } else {
                 fabDelete.setImageResource(R.drawable.ic_create_black_24dp);
@@ -160,6 +166,8 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
 
                 tvDelete.setText("Add");
                 tvDelete.setVisibility(View.VISIBLE);
+
+                fabDeleteCard.setVisibility(View.VISIBLE);
 
                 fabSettings.setImageResource(R.drawable.ic_close_black_24dp);
                 fabExpanded = true;
@@ -210,6 +218,14 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
         tvList.add(tvEdit);
         tvList.add(tvDelete);
         tvList.add(tvSave);
+
+        CardView fabEditCard = findViewById(R.id.editCard);
+        CardView fabSaveCard = findViewById(R.id.saveCard);
+        fabDeleteCard = findViewById(R.id.deleteCard);
+
+        fabCards.add(fabDeleteCard);
+        fabCards.add(fabSaveCard);
+        fabCards.add(fabEditCard);
     }
 
     /**

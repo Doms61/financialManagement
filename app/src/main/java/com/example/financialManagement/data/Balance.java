@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Balance implements Serializable {
 
     private String balanceName;
-    private int balance;
+    private double balance;
 
 
     public Balance() { }
@@ -19,7 +19,7 @@ public class Balance implements Serializable {
      * @param balanceName Name of the balance or wallet
      * @param balance     Balance amount
      */
-    public Balance(String balanceName, int balance) {
+    public Balance(String balanceName, double balance) {
         this.balanceName = balanceName;
         this.balance = balance;
     }
@@ -28,7 +28,7 @@ public class Balance implements Serializable {
         return balanceName;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
@@ -36,7 +36,7 @@ public class Balance implements Serializable {
         this.balanceName = balanceName;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 }

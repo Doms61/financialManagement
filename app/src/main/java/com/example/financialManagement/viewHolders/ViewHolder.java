@@ -15,6 +15,7 @@ import financialManagement.R;
 public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     public TextView name;
+    public TextView amount;
     final private OnListItemClickListener onListItemClickListener;
 
     /**
@@ -26,6 +27,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
     public ViewHolder(@NonNull View itemView, OnListItemClickListener onListItemClickListener) {
         super(itemView);
         name = itemView.findViewById(R.id.balanceListName_tv);
+        amount = itemView.findViewById(R.id.amount_tv);
         this.onListItemClickListener = onListItemClickListener;
         itemView.setOnClickListener(this);
     }

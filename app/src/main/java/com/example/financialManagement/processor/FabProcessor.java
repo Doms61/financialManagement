@@ -7,6 +7,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import androidx.cardview.widget.CardView;
 import financialManagement.R;
 
 /**
@@ -16,14 +17,26 @@ public class FabProcessor {
 
     /**
      * Closes all the sub-menus.
-     *
-     * @param fabList     Floating Action Button list
+     *  @param fabList     Floating Action Button list
      * @param fabSettings Floating Action Button setting
      * @param tvList      Text View list corresponding to the fabList
      */
     public void closeSubMenus(List<FloatingActionButton> fabList, FloatingActionButton fabSettings, List<TextView> tvList) {
         for (FloatingActionButton fab : fabList) {
             fab.setVisibility(View.INVISIBLE);
+        }
+        for (TextView tv : tvList) {
+            tv.setVisibility(View.INVISIBLE);
+        }
+        fabSettings.setImageResource(R.drawable.ic_settings_black_24dp);
+    }
+
+    public void closeSubMenus(List<FloatingActionButton> fabList, FloatingActionButton fabSettings, List<CardView> cardViews, List<TextView> tvList) {
+        for (FloatingActionButton fab : fabList) {
+            fab.setVisibility(View.INVISIBLE);
+        }
+        for (CardView cv : cardViews) {
+            cv.setVisibility(View.INVISIBLE);
         }
         for (TextView tv : tvList) {
             tv.setVisibility(View.INVISIBLE);
@@ -41,6 +54,19 @@ public class FabProcessor {
     public void openSubMenus(List<FloatingActionButton> fabList, FloatingActionButton fabSettings, List<TextView> tvList) {
         for (FloatingActionButton fab : fabList) {
             fab.setVisibility(View.VISIBLE);
+        }
+        for (TextView tv : tvList) {
+            tv.setVisibility(View.VISIBLE);
+        }
+        fabSettings.setImageResource(R.drawable.ic_close_black_24dp);
+    }
+
+    public void openSubMenus(List<FloatingActionButton> fabList, FloatingActionButton fabSettings, List<CardView> fabCards,List<TextView> tvList) {
+        for (FloatingActionButton fab : fabList) {
+            fab.setVisibility(View.VISIBLE);
+        }
+        for (CardView cv : fabCards) {
+            cv.setVisibility(View.VISIBLE);
         }
         for (TextView tv : tvList) {
             tv.setVisibility(View.VISIBLE);
