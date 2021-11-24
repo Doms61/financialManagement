@@ -108,6 +108,7 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
         balances = new ArrayList<>();
 
         getBalances();
+        balanceAdapter = new BalanceAdapter(balances, BalanceProcessor.this);
     }
 
     /**
@@ -117,7 +118,7 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
      */
     public void saveBtnClick(View view) {
         Map<String, Object> dataToSave = new HashMap<>();
-        balance.setBalance(Integer.parseInt(createBalanceAmount.getText().toString()));
+        balance.setBalance(Double.parseDouble(createBalanceAmount.getText().toString()));
         balance.setBalanceName(createBalanceName.getText().toString());
 
         dataToSave.put("balance", balance.getBalance());
@@ -192,8 +193,8 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
         // show the popup window
         popupWindow.showAtLocation(this.findViewById(R.id.balances_layout), Gravity.CENTER, 0, 0);
 
-        createBalanceName = popupView.findViewById(R.id.createSpendingName_tv);
-        createBalanceAmount = popupView.findViewById(R.id.createSpendingAmount_tv);
+        createBalanceName = popupView.findViewById(R.id.createBalanceName_tv);
+        createBalanceAmount = popupView.findViewById(R.id.createBalanceAmount_tv);
     }
 
     /**

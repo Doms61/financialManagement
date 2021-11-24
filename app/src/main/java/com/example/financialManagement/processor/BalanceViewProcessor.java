@@ -1,11 +1,14 @@
 package com.example.financialManagement.processor;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -23,6 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,18 +50,14 @@ import static com.example.financialManagement.enumerations.Enums.SPENDING_LIST;
  */
 public class BalanceViewProcessor extends AppCompatActivity implements OnListItemClickListener {
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser currentUser;
     private FirebaseFirestore db;
 
-    private TextView balanceName;
-    private TextView balanceAmount;
     private Balance balance;
 
     private RecyclerView spendingList;
     private RecyclerView.Adapter spendingAdapter;
 
-    private ArrayList<Spending> spendings = new ArrayList<>();
+    private final ArrayList<Spending> spendings = new ArrayList<>();
     private Spending spending;
 
     // Path to the document containing all the balances on firebase
@@ -67,10 +68,10 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
 
     private FloatingActionButton fabSettings;
     private FloatingActionButton fabDelete;
+    private FloatingActionButton fabEdit;
     private FloatingActionButton fabSave;
     private final List<FloatingActionButton> fabList = new ArrayList<>();
 
-    private TextView tvDelete;
     private TextView tvSave;
     private final List<TextView> tvList = new ArrayList<>();
 
@@ -84,14 +85,17 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
     private TextView spendingName;
     private TextView spendingAmount;
     private TextView spendingDescription;
-    private List<Budget> budgets;
+    private final List<Budget> budgets = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
-    private ArrayList<String> budgetNames = new ArrayList<>();
+    private final ArrayList<String> budgetNames = new ArrayList<>();
 
     private String email;
 
-
+    private EditText createBalanceAmount;
+    private EditText createBalanceName;
+    private Button editBalanceBtn;
+    private Button cancelBalanceBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,8 +103,8 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
         setContentView(R.layout.activity_balance);
 
         db = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentUser = firebaseAuth.getCurrentUser();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         spendingList = findViewById(R.id.balanceSpendingReports_rv);
         spendingList.hasFixedSize();
@@ -114,8 +118,8 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
 
         balance = (Balance) getIntent().getSerializableExtra("balance");
 
-        balanceName = findViewById(R.id.balanceNameTV);
-        balanceAmount = findViewById(R.id.balanceAmountTV);
+        TextView balanceName = findViewById(R.id.balanceNameTV);
+        TextView balanceAmount = findViewById(R.id.balanceAmountTV);
 
         balanceName.setText(balance.getBalanceName());
         balanceAmount.setText(String.valueOf(balance.getBalance()));
@@ -131,11 +135,53 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
                 .collection(SPENDING_LIST.getDescription()).getPath();
 
         getSpendings();
+        spendingAdapter = new SpendingAdapter(spendings, this);
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        startActivity(new Intent(BalanceViewProcessor.this, SpendingProcessor.class)
+                .putExtra("spending", spendings.get(clickedItemIndex)));
+    }
+
+    /**
+     * Saving new spending for this balance
+     *
+     * @param view View
+     */
+    public void saveSpendingBtn(View view) {
+        Map<String, Object> dataToSave = new HashMap<>();
+        spending = new Spending();
+        spending.setAmount(BigDecimal.valueOf(Double.parseDouble(spendingAmount.getText().toString())).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        spending.setName(spendingName.getText().toString());
+        spending.setDate(new Date());
+        spending.setDescription(spendingDescription.getText().toString());
+
+        for (Spending spend : spendings) {
+            if (spend.getName().equals(spending.getName()))
+                spending.setAmount(BigDecimal.valueOf(spend.getAmount() + spending.getAmount()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        }
+
+        dataToSave.put("name", spending.getName());
+        dataToSave.put("amount", spending.getAmount());
+        dataToSave.put("date", spending.getDate());
+        dataToSave.put("description", spending.getDescription());
+
+        db.collection(docPath).document(spending.getName()).set(dataToSave).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "New spending added", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Spending failed to be created", Toast.LENGTH_SHORT).show();
+            }
+        });
+        updateBalance();
+        popupWindow.dismiss();
+        refresh();
     }
 
     private void getBudgetNames() {
         //TODO: get budgets from db -> budgets
-        for (Budget budget: budgets) {
+        for (Budget budget : budgets) {
             budgetNames.add(budget.getName());
         }
     }
@@ -163,10 +209,97 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
         });
         fabSave.setOnClickListener(task -> popUp());
 
-        fabDelete.setOnClickListener(task -> deletePopup());
+        fabDelete.setOnClickListener(task -> deletePopUp());
+
+        fabEdit.setOnClickListener(task -> editPopUp());
     }
 
-    private void deletePopup() {
+    /**
+     * Canceling new spending for this balance
+     *
+     * @param view View
+     */
+    public void cancelSpendingBtn(View view) {
+        popupWindow.dismiss();
+    }
+
+    private View createPopUp(int activity) {
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View popupView = inflater.inflate(activity, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        popupWindow = new PopupWindow(popupView, width, height, true);
+
+        // show the popup window
+        popupWindow.showAtLocation(this.findViewById(R.id.balanceSpendingReports_rv), Gravity.CENTER, 0, 0);
+
+        return popupView;
+    }
+    private void deletePopUp() {
+        // Create popUp
+        View popupView = createPopUp(R.layout.activity_deletion);
+
+        popupView.findViewById(R.id.confirmDeletion_btn).setOnClickListener(task -> deleteBalance());
+        popupView.findViewById(R.id.cancelDeletion_btn).setOnClickListener(task -> popupWindow.dismiss());
+    }
+
+    private void deleteBalance(){
+        db.collection(email)
+                .document(BALANCE_LIST.getDescription())
+                .collection(BALANCE_LIST.getDescription())
+                .document(balance.getBalanceName()).delete()
+                .addOnCompleteListener(task -> {
+           if(task.isSuccessful()) {
+               Toast.makeText(this, balance.getBalance() + " was deleted", Toast.LENGTH_SHORT).show();
+           } else {
+               Toast.makeText(this, "Error: Balance was not deleted", Toast.LENGTH_SHORT).show();
+           }
+        });
+        popupWindow.dismiss();
+        startActivity(new Intent(BalanceViewProcessor.this, BalanceProcessor.class));
+    }
+
+    private void editPopUp() {
+        View popupView = createPopUp(R.layout.activity_create_balance);
+
+        createBalanceName = popupView.findViewById(R.id.createBalanceName_tv);
+        createBalanceAmount = popupView.findViewById(R.id.createBalanceAmount_tv);
+        editBalanceBtn = popupView.findViewById(R.id.createBalanceSave_btn);
+        cancelBalanceBtn = popupView.findViewById(R.id.createBalanceCancel_btn);
+
+        createBalanceName.setText(balance.getBalanceName());
+        createBalanceName.setEnabled(false);
+        createBalanceAmount.setText(String.valueOf(balance.getBalance()));
+
+        cancelBalanceBtn.setOnClickListener(task -> popupWindow.dismiss());
+
+        editBalanceBtn.setOnClickListener(task -> editBalance());
+    }
+
+    private void editBalance() {
+        Map<String, Object> dataToSave = new HashMap<>();
+        balance.setBalance(Integer.parseInt(createBalanceAmount.getText().toString()));
+        balance.setBalanceName(createBalanceName.getText().toString());
+
+        dataToSave.put("balance", balance.getBalance());
+        dataToSave.put("balanceName", balance.getBalanceName());
+        db.collection(email)
+                .document(BALANCE_LIST.getDescription())
+                .collection(BALANCE_LIST.getDescription())
+                .document(balance.getBalanceName())
+                .set(dataToSave)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Balance was edited", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Balance failed to be saved", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        popupWindow.dismiss();
+        refresh();
     }
 
     /**
@@ -187,34 +320,6 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
     }
 
     /**
-     * Saving new spending for this balance
-     *
-     * @param view View
-     */
-    public void saveSpendingBtn(View view) {
-        Map<String, Object> dataToSave = new HashMap<>();
-        spending.setAmount(Integer.parseInt(spendingAmount.getText().toString()));
-        spending.setName(spendingName.getText().toString());
-        spending.setDate(new Date());
-        spending.setDescription(spendingDescription.getText().toString());
-
-        dataToSave.put("name", spending.getName());
-        dataToSave.put("amount", spending.getAmount());
-        dataToSave.put("date", spending.getDate());
-        dataToSave.put("description", spending.getDescription());
-
-        db.collection(docPath).document(spending.getName()).set(dataToSave).addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(this, "New spending added", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Spending failed to be created", Toast.LENGTH_SHORT).show();
-            }
-        });
-        updateBalance();
-        refresh();
-    }
-
-    /**
      * Refreshes the activity, thus clearing all forms.
      */
     private void refresh() {
@@ -225,30 +330,10 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
     }
 
     /**
-     * Canceling new spending for this balance
-     *
-     * @param view View
-     */
-    public void cancelSpendingBtn(View view) {
-        popupWindow.dismiss();
-    }
-
-
-    /**
      * Popup creation, initialization, declaration
      */
     private void popUp() {
-        // inflate the layout of the popup window
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View popupView = inflater.inflate(R.layout.activity_create_spending, null);
-
-        // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        popupWindow = new PopupWindow(popupView, width, height, true);
-
-        // show the popup window
-        popupWindow.showAtLocation(this.findViewById(R.id.balanceSpendingReports_rv), Gravity.CENTER, 0, 0);
+        View popupView = createPopUp(R.layout.activity_create_spending);
 
         //TODO: pull out dropdown and items to be global, inflate it with real data from firebase (doable only after budget is available)
         //get the spinner from the xml.
@@ -275,7 +360,7 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
         fabSettings = findViewById(R.id.fab_settings);
         fabProcessor = new FabProcessor();
 
-        FloatingActionButton fabEdit = findViewById(R.id.fab_edit);
+        fabEdit = findViewById(R.id.fab_edit);
         fabDelete = findViewById(R.id.fab_delete);
         fabSave = findViewById(R.id.fab_save);
 
@@ -284,7 +369,7 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
         fabList.add(fabSave);
 
         TextView tvEdit = findViewById(R.id.fab_edit_tv);
-        tvDelete = findViewById(R.id.fab_delete_tv);
+        TextView tvDelete = findViewById(R.id.fab_delete_tv);
         tvSave = findViewById(R.id.fab_save_tv);
 
         tvList.add(tvEdit);
@@ -300,7 +385,7 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
         fabCards.add(fabEditCard);
     }
 
-    private void updateBalance(){
+    private void updateBalance() {
         balance.setBalance(balance.getBalance() - spending.getAmount());
         Map<String, Object> update = new HashMap<>();
         update.put("balance", balance.getBalance());
@@ -311,10 +396,5 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
                 .collection(BALANCE_LIST.getDescription())
                 .document(balance.getBalanceName())
                 .set(update);
-    }
-
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
-
     }
 }

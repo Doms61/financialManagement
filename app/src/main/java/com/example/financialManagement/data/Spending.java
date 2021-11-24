@@ -1,11 +1,12 @@
 package com.example.financialManagement.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Data class for spending
  */
-public class Spending {
+public class Spending implements Serializable {
 
     private String name;
     private double amount;
