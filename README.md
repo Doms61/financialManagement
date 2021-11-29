@@ -34,3 +34,12 @@ TODO for next sprint:
  - finish single balance view
  - finish spendings (single spending view as well)
  - start with budget
+
+Status after the 3rd sprint:
+ - balance is done for now (there will be some changes in the future)
+ - spendings close to be done
+
+TODO: for the next sprint:
+ - finish spending
+ - start/finish budgets
+ - create an outline (or a layout) for general overview
