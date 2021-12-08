@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.example.financialManagement.data.Spending;
 import com.example.financialManagement.interfaces.OnListItemClickListener;
-import com.example.financialManagement.viewHolders.ViewHolder;
+import com.example.financialManagement.viewHolders.SpendingViewHolder;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import financialManagement.R;
 
-public class SpendingAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class SpendingAdapter extends RecyclerView.Adapter<SpendingViewHolder> {
 
     private final ArrayList<Spending> spendingList;
     final private OnListItemClickListener onListItemClickListener;
@@ -27,16 +27,18 @@ public class SpendingAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SpendingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.balance_list_item, parent, false);
-        return new ViewHolder(view, onListItemClickListener);
+        View view = inflater.inflate(R.layout.spending_list_item, parent, false);
+        return new SpendingViewHolder(view, onListItemClickListener);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SpendingViewHolder holder, int position) {
         holder.name.setText(spendingList.get(position).getName());
         holder.amount.setText(String.valueOf(spendingList.get(position).getAmount()));
+        holder.date.setText(spendingList.get(position).getDateShort());
     }
 
     @Override

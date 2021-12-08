@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view View
      */
     public void loginClick(View view) {
-        String mail = "qwee@qwe.com";//email.getText().toString();
+        String mail = "qwe@qwe.com";//email.getText().toString();
         String password = "qweqweqwe";//pwd.getText().toString();
 
         firebaseAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(this, task -> {

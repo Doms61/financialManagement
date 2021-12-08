@@ -44,6 +44,7 @@ import financialManagement.R;
 
 import static com.example.financialManagement.enumerations.Enums.BALANCE_LIST;
 import static com.example.financialManagement.enumerations.Enums.SPENDING_LIST;
+import static com.example.financialManagement.enumerations.Enums.SUBSPENDING_LIST;
 
 /**
  * Class for handling a specific balance and all his properties including it's spending.
@@ -141,7 +142,8 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
     @Override
     public void onListItemClick(int clickedItemIndex) {
         startActivity(new Intent(BalanceViewProcessor.this, SpendingProcessor.class)
-                .putExtra("spending", spendings.get(clickedItemIndex)));
+                .putExtra("spending", spendings.get(clickedItemIndex))
+                .putExtra("balance", balance));
     }
 
     /**
@@ -151,21 +153,26 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
      */
     public void saveSpendingBtn(View view) {
         Map<String, Object> dataToSave = new HashMap<>();
+        double original = -1;
         spending = new Spending();
         spending.setAmount(BigDecimal.valueOf(Double.parseDouble(spendingAmount.getText().toString())).setScale(2, RoundingMode.HALF_UP).doubleValue());
         spending.setName(spendingName.getText().toString());
         spending.setDate(new Date());
+        spending.setDateShort(String.valueOf(spending.getDate()));
         spending.setDescription(spendingDescription.getText().toString());
 
         for (Spending spend : spendings) {
-            if (spend.getName().equals(spending.getName()))
+            if (spend.getName().equals(spending.getName())) {
+                original = spending.getAmount();
                 spending.setAmount(BigDecimal.valueOf(spend.getAmount() + spending.getAmount()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+            }
         }
 
         dataToSave.put("name", spending.getName());
         dataToSave.put("amount", spending.getAmount());
         dataToSave.put("date", spending.getDate());
         dataToSave.put("description", spending.getDescription());
+        dataToSave.put("dateShort", spending.getDateShort().substring(spending.getDateShort().lastIndexOf("20")).concat(" ").concat(spending.getDateShort().substring(3, 10).trim()));
 
         db.collection(docPath).document(spending.getName()).set(dataToSave).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
@@ -174,6 +181,16 @@ public class BalanceViewProcessor extends AppCompatActivity implements OnListIte
                 Toast.makeText(this, "Spending failed to be created", Toast.LENGTH_SHORT).show();
             }
         });
+
+        if(original > 0 ) {
+            spending.setAmount(original);
+            dataToSave.put("amount", spending.getAmount());
+        }
+        db.collection(docPath)
+                .document(spending.getName())
+                .collection(SUBSPENDING_LIST.getDescription())
+                .document(spending.getDate() + " " +spending.getName()).set(dataToSave);
+
         updateBalance();
         popupWindow.dismiss();
         refresh();

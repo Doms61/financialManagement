@@ -12,14 +12,16 @@ public class Spending implements Serializable {
     private double amount;
     private Date date;
     private String description;
+    private String dateShort;
 
     public Spending() {}
 
-    public Spending(String name, double amount, Date date, String description) {
+    public Spending(String name, double amount, Date date, String description, String dateShort) {
         this.name = name;
         this.amount = amount;
         this.date = date;
         this.description = description;
+        this.dateShort = dateShort;
     }
 
     public String getName() {
@@ -52,5 +54,13 @@ public class Spending implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDateShort() {
+        return dateShort;
+    }
+
+    public void setDateShort(String dateShort) {
+        this.dateShort = dateShort;//dateShort.lastIndexOf('a')
     }
 }

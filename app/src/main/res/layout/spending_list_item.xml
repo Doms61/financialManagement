@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#e4e4e4">
+
+    <TextView
+        android:id="@+id/spendingListName_tv"
+        style="@style/ListItemName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Spending" />
+
+    <TextView
+        android:id="@+id/spendingListAmount_tv"
+        style="@style/ListItemName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Amount" />
+
+    <TextView
+        android:id="@+id/spendingListDate_tv"
+        style="@style/ListItemName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Last modified" />
+</LinearLayout>

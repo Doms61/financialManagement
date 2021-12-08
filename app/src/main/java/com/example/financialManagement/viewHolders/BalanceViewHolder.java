@@ -12,7 +12,7 @@ import financialManagement.R;
 /**
  * ViewHolder class for all the recycler views
  */
-public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class BalanceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     public TextView name;
     public TextView amount;
@@ -24,7 +24,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
      * @param itemView View
      * @param onListItemClickListener OnListItemClickListener
      */
-    public ViewHolder(@NonNull View itemView, OnListItemClickListener onListItemClickListener) {
+    public BalanceViewHolder(@NonNull View itemView, OnListItemClickListener onListItemClickListener) {
         super(itemView);
         name = itemView.findViewById(R.id.balanceListName_tv);
         amount = itemView.findViewById(R.id.amount_tv);

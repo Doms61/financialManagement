@@ -118,8 +118,7 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
      */
     public void saveBtnClick(View view) {
         Map<String, Object> dataToSave = new HashMap<>();
-        balance.setBalance(Double.parseDouble(createBalanceAmount.getText().toString()));
-        balance.setBalanceName(createBalanceName.getText().toString());
+        balance = new Balance(createBalanceName.getText().toString(), Double.parseDouble(createBalanceAmount.getText().toString()));
 
         dataToSave.put("balance", balance.getBalance());
         dataToSave.put("balanceName", balance.getBalanceName());
@@ -130,6 +129,7 @@ public class BalanceProcessor extends AppCompatActivity implements OnListItemCli
                 Toast.makeText(this, "Balance failed to be created", Toast.LENGTH_SHORT).show();
             }
         });
+        popupWindow.dismiss();
         refresh();
     }
 
