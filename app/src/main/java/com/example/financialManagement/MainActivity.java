@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.financialManagement.processor.BalanceProcessor;
 import com.example.financialManagement.processor.SignUpProcessor;
-import com.example.financialManagement.processor.UserProfileProcessor;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
      * @param view View
      */
     public void loginClick(View view) {
-        String mail = email.getText().toString();
-        String password = pwd.getText().toString();
+        String mail = "qwe@qwe.com";//email.getText().toString();
+        String password = "qweqweqwe";//pwd.getText().toString();
 
         firebaseAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                startActivity(new Intent(MainActivity.this, UserProfileProcessor.class));
+                startActivity(new Intent(MainActivity.this, BalanceProcessor.class));//UserProfileProcessor.class));//
             } else {
                 Toast.makeText(MainActivity.this, "Incorrect email or password. Try again!", Toast.LENGTH_SHORT).show();
             }

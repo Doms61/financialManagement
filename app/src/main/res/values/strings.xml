@@ -21,4 +21,6 @@
     <string name="user_name">"User: "</string>
     <string name="user_id">"User id: "</string>
     <string name="user_email">"Email: "</string>
+    <string name="deletion_msg">Are you sure, you want to delete this item?</string>
+    <string name="yes">Yes</string>
 </resources>
