@@ -7,26 +7,19 @@
     android:background="#e4e4e4">
 
     <TextView
-        android:id="@+id/spendingListName_tv"
+        android:id="@+id/budgetListName_tv"
         style="@style/ListItemName"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="Spending" />
+        android:text="Budget" />
 
     <TextView
-        android:id="@+id/spendingListAmount_tv"
+        android:id="@+id/budgetListRemainingAmount_tv"
         style="@style/ListItemName"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
-        android:text="Amount" />
+        android:text="Remaining" />
 
-    <TextView
-        android:id="@+id/spendingListDate_tv"
-        style="@style/ListItemName"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="Last modified" />
 </LinearLayout>

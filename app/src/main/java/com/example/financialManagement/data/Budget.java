@@ -8,7 +8,8 @@ import java.io.Serializable;
 public class Budget implements Serializable {
 
     private String name;
-    private double amount;
+    private double totalAmount;
+    private double remainingAmount;
     private int percentWarning;
     private int amountWarning;
 
@@ -19,27 +20,28 @@ public class Budget implements Serializable {
      * Constructor.
      *
      * @param name   Name of the budget
-     * @param amount Budget amount
+     * @param remainingAmount Budget amount
      */
-    public Budget(String name, double amount) {
+    public Budget(String name, double remainingAmount, double totalAmount) {
         this.name = name;
-        this.amount = amount;
+        this.remainingAmount = remainingAmount;
+        this.totalAmount = totalAmount;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setRemainingAmount(double remainingAmount) {
+        this.remainingAmount = remainingAmount;
     }
 
     public String getName() {
         return name;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getRemainingAmount() {
+        return remainingAmount;
     }
 
     public int getPercentWarning() {
@@ -56,5 +58,13 @@ public class Budget implements Serializable {
 
     public void setAmountWarning(int amountWarning) {
         this.amountWarning = amountWarning;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }
